@@ -1,0 +1,386 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1739960200138-1
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: cart_items_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1739960200138-2
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: cart_seq
+            startValue: 1
+  - changeSet:
+      id: 1739960200138-3
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: complex_lunch_seq
+            startValue: 1
+  - changeSet:
+      id: 1739960200138-4
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: dish_seq
+            startValue: 1
+  - changeSet:
+      id: 1739960200138-5
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: order_seq
+            startValue: 1
+  - changeSet:
+      id: 1739960200138-6
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: user_seq
+            startValue: 1
+  - changeSet:
+      id: 1739960200138-7
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cart_id
+                  type: BIGINT
+              - column:
+                  name: dish_id
+                  type: BIGINT
+              - column:
+                  name: complex_lunch_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: !!float '1'
+                  name: quantity
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: NUMBER(38, 2)
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                  name: id
+                  type: BIGINT
+            tableName: cart_items
+  - changeSet:
+      id: 1739960200138-8
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: carts_pkey
+                  defaultValueComputed: nextval('cart_seq')
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: now()
+                  name: created_at
+                  type: timestamp
+              - column:
+                  defaultValueNumeric: !!float '0'
+                  name: total_price
+                  type: NUMBER(38, 2)
+            tableName: carts
+  - changeSet:
+      id: 1739960200138-9
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: complex_lunch_dishes_pkey
+                  name: complex_lunch_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: complex_lunch_dishes_pkey
+                  name: dish_id
+                  type: BIGINT
+            tableName: complex_lunch_dishes
+  - changeSet:
+      id: 1739960200138-10
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: complex_lunches_pkey
+                  defaultValueComputed: nextval('complex_lunch_seq')
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: NUMBER(38, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: day_of_week
+                  type: VARCHAR(255)
+              - column:
+                  name: image_url
+                  type: VARCHAR(255)
+            tableName: complex_lunches
+  - changeSet:
+      id: 1739960200138-11
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: dishes_pkey
+                  defaultValueComputed: nextval('dish_seq')
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: weight
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: NUMBER(38, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: category
+                  type: VARCHAR(255)
+              - column:
+                  name: image_url
+                  type: VARCHAR(255)
+            tableName: dishes
+  - changeSet:
+      id: 1739960200138-12
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: orders_pkey
+                  defaultValueComputed: nextval('order_seq')
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: cart_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: full_name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: phone
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: address
+                  type: VARCHAR(255)
+              - column:
+                  name: comment
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValue: NEW
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: now()
+                  name: created_at
+                  type: timestamp
+              - column:
+                  constraints:
+                    nullable: false
+                  name: total_amount
+                  type: NUMBER(38, 2)
+            tableName: orders
+  - changeSet:
+      id: 1739960200138-13
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: users_pkey
+                  defaultValueComputed: nextval('user_seq')
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValue: ADMIN
+                  name: role
+                  type: VARCHAR(255)
+            tableName: users
+  - changeSet:
+      id: 1739960200138-14
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: username
+            constraintName: users_username_key
+            tableName: users
+  - changeSet:
+      id: 1739960200138-15
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cart_id
+            baseTableName: cart_items
+            constraintName: cart_items_cart_id_fkey
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: carts
+  - changeSet:
+      id: 1739960200138-16
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: complex_lunch_id
+            baseTableName: cart_items
+            constraintName: cart_items_complex_lunch_id_fkey
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: complex_lunches
+  - changeSet:
+      id: 1739960200138-17
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: dish_id
+            baseTableName: cart_items
+            constraintName: cart_items_dish_id_fkey
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: dishes
+  - changeSet:
+      id: 1739960200138-18
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: complex_lunch_id
+            baseTableName: complex_lunch_dishes
+            constraintName: complex_lunch_dishes_complex_lunch_id_fkey
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: complex_lunches
+  - changeSet:
+      id: 1739960200138-19
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: dish_id
+            baseTableName: complex_lunch_dishes
+            constraintName: complex_lunch_dishes_dish_id_fkey
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: dishes
+  - changeSet:
+      id: 1739960200138-20
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cart_id
+            baseTableName: orders
+            constraintName: orders_cart_id_fkey
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: carts
+

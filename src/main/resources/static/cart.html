@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+
+    <link rel ="stylesheet" href="cart.css">
+</head>
+<body>
+<h1>Корзина</h1>
+
+<div class="cart-container" id="cartContainer"></div>
+<div id="notification" class="notification"></div>
+
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Оформление заказа</h2>
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="fullName">ФИО:</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Адрес доставки:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="comment">Комментарий к заказу:</label>
+                <textarea id="comment" name="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="submit-order">Подтвердить заказ</button>
+        </form>
+    </div>
+</div>
+<button class="back-button" onclick="window.location.href='/'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+</button>
+<script src="cart.js"></script>
+</body>
+</html>

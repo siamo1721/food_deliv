@@ -1,0 +1,287 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1740077778598-26
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_payments
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: order_id
+                  type: BIGINT
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: amount
+                  type: DECIMAL
+              - column:
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: confirmed_at
+                  type: DATETIME
+            tableName: payments
+  - changeSet:
+      id: 1740077778598-32
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: cart_id
+            constraintName: uc_orders_cart
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-33
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: order_id
+            constraintName: uc_payments_order
+            tableName: payments
+  - changeSet:
+      id: 1740077778598-34
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName: payments
+            constraintName: FK_PAYMENTS_ON_ORDER
+            referencedColumnNames: id
+            referencedTableName: orders
+  - changeSet:
+      id: 1740077778598-1
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: address
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-2
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: bigint
+            columnName: cart_id
+            tableName: cart_items
+  - changeSet:
+      id: 1740077778598-3
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: category
+            tableName: dishes
+  - changeSet:
+      id: 1740077778598-4
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: datetime
+            columnName: created_at
+            tableName: carts
+  - changeSet:
+      id: 1740077778598-5
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: datetime
+            columnName: created_at
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-6
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: day_of_week
+            tableName: complex_lunches
+  - changeSet:
+      id: 1740077778598-7
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: full_name
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-8
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: name
+            tableName: complex_lunches
+  - changeSet:
+      id: 1740077778598-9
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: name
+            tableName: dishes
+  - changeSet:
+      id: 1740077778598-10
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: password
+            tableName: users
+  - changeSet:
+      id: 1740077778598-11
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: phone
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-12
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: price
+            newDataType: DECIMAL
+            tableName: cart_items
+  - changeSet:
+      id: 1740077778598-13
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: decimal
+            columnName: price
+            tableName: cart_items
+  - changeSet:
+      id: 1740077778598-14
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: price
+            newDataType: DECIMAL
+            tableName: complex_lunches
+  - changeSet:
+      id: 1740077778598-15
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: decimal
+            columnName: price
+            tableName: complex_lunches
+  - changeSet:
+      id: 1740077778598-16
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: price
+            newDataType: DECIMAL
+            tableName: dishes
+  - changeSet:
+      id: 1740077778598-17
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: decimal
+            columnName: price
+            tableName: dishes
+  - changeSet:
+      id: 1740077778598-18
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: int
+            columnName: quantity
+            tableName: cart_items
+  - changeSet:
+      id: 1740077778598-19
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: role
+            tableName: users
+  - changeSet:
+      id: 1740077778598-20
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: status
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-21
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: total_amount
+            newDataType: DECIMAL
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-22
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: decimal
+            columnName: total_amount
+            tableName: orders
+  - changeSet:
+      id: 1740077778598-23
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: total_price
+            newDataType: DECIMAL
+            tableName: carts
+  - changeSet:
+      id: 1740077778598-24
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: username
+            tableName: users
+  - changeSet:
+      id: 1740077778598-25
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: int
+            columnName: weight
+            tableName: dishes
+
