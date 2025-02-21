@@ -1,5 +1,6 @@
 package com.example.food_deliv.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     @Enumerated(EnumType.STRING)

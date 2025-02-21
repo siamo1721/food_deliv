@@ -39,7 +39,27 @@ async function updateCartCount() {
         console.error('Ошибка при получении данных корзины:', error);
     }
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const aboutButton = document.getElementById('aboutButton');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeModal = document.querySelector('.close');
 
+    // Открываем модальное окно при нажатии на кнопку
+    aboutButton.addEventListener('click', function () {
+        aboutModal.style.display = 'flex';
+    });
 
+    // Закрываем модальное окно при нажатии на крестик
+    closeModal.addEventListener('click', function () {
+        aboutModal.style.display = 'none';
+    });
+
+    // Закрываем модальное окно при клике вне его
+    window.addEventListener('click', function (event) {
+        if (event.target === aboutModal) {
+            aboutModal.style.display = 'none';
+        }
+    });
+});
 // Обновляем счетчик при загрузке страницы
 document.addEventListener('DOMContentLoaded', updateCartCount);

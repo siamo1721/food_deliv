@@ -1,5 +1,6 @@
 package com.example.food_deliv.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<CartItem> items = new ArrayList<>();
-
+    @OneToOne(mappedBy = "cart")
+    @JsonBackReference // Связь с заказом
+    private Order order;
 
     public Cart() {
         this.createdAt = LocalDateTime.now();

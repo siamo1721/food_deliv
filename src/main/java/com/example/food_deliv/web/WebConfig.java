@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         // Обработка статических ресурсов для конкретных папок
         registry.addResourceHandler("/dishes/**")
-                .addResourceLocations("classpath:/static/dishes/dishes")
+                .addResourceLocations("classpath:/static/dishes")
                 .setCacheControl(CacheControl.noCache());
 
         registry.addResourceHandler("/main/**")
@@ -35,11 +35,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .setCacheControl(CacheControl.noCache());
 
         registry.addResourceHandler("/cart/**")
-                .addResourceLocations("classpath:/static/cart/cart")
+                .addResourceLocations("classpath:/static/cart")
                 .setCacheControl(CacheControl.noCache());
 
         registry.addResourceHandler("/lunch/**")
-                .addResourceLocations("classpath:/static/lunch/lunch")
+                .addResourceLocations("classpath:/static/lunch")
                 .setCacheControl(CacheControl.noCache());
 
         registry.addResourceHandler("/images/**")

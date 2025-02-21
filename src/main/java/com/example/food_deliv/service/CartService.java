@@ -38,9 +38,16 @@ public class CartService {
     public Cart addItemToCart(Long cartId, Long itemId, String itemType, int quantity, String bread, String drink) {
         Cart cart = getCart(cartId);
 
+        // Ищем существующий элемент с учетом itemType
         Optional<CartItem> existingItem = cart.getItems().stream()
-                .filter(item -> (item.getDish() != null && item.getDish().getId().equals(itemId)) ||
-                        (item.getComplexLunch() != null && item.getComplexLunch().getId().equals(itemId)))
+                .filter(item -> {
+                    if ("dishes".equals(itemType)) {
+                        return item.getDish() != null && item.getDish().getId().equals(itemId);
+                    } else if ("complex-lunches".equals(itemType)) {
+                        return item.getComplexLunch() != null && item.getComplexLunch().getId().equals(itemId);
+                    }
+                    return false;
+                })
                 .findFirst();
 
         if (existingItem.isPresent()) {
@@ -143,6 +150,15 @@ public class CartService {
                 .map(CartItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalPrice(total);
+    }
+    @Transactional
+    public void clearCart(Long cartId) {
+        Cart cart = getCart(cartId);
+        if (cart != null) {
+            cart.getItems().clear(); // Очищаем список товаров
+            cartRepository.save(cart); // Сохраняем изменения
+            log.info("Корзина очищена: {}", cartId);
+        }
     }
 
 }

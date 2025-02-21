@@ -1,26 +1,23 @@
 package com.example.food_deliv.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "cart_items")
-public class CartItem {
+@Table(name = "order_items")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    @JsonBackReference
-    private Cart cart;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "dish_id")
@@ -32,9 +29,6 @@ public class CartItem {
 
     private Integer quantity;
     private BigDecimal price;
-    @Column(nullable = false)
-    private int orderIndex;
-
     private String bread;
     private String drink;
 }

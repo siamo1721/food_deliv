@@ -1,4 +1,5 @@
 let cartId = localStorage.getItem('cartId');
+let orderData = null; // Сохраняем данные заказа здесь
 
 function showNotification(message, isError = false) {
     const notification = document.getElementById('notification');
@@ -159,8 +160,7 @@ window.onclick = function(event) {
     }
 }
 
-// Обновляем функцию в cart.js
-
+// Обработка формы заказа
 document.getElementById('orderForm').onsubmit = async function (e) {
     e.preventDefault();
 
@@ -170,42 +170,22 @@ document.getElementById('orderForm').onsubmit = async function (e) {
     submitButton.textContent = "Оформление...";
 
     const formData = new FormData(form);
-    const orderData = Object.fromEntries(formData.entries());
+    orderData = Object.fromEntries(formData.entries()); // Сохраняем данные заказа
 
-    try {
-        const response = await fetch('/api/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                cartId: cartId,
-                ...orderData
-            })
-        });
+    // Закрываем модальное окно и показываем окно оплаты
+    document.getElementById('orderModal').style.display = 'none';
+    showPaymentModal();
 
-        if (!response.ok) {
-            throw new Error('Ошибка при оформлении заказа');
-        }
-
-        const order = await response.json();
-        showPaymentModal(order.id); // Показываем модальное окно оплаты
-
-    } catch (error) {
-        console.error('Ошибка при оформлении заказа:', error);
-        showNotification('Не удалось оформить заказ', true);
-    } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Оформить заказ";
-    }
+    submitButton.disabled = false;
+    submitButton.textContent = "Оформить заказ";
 };
 
-function showPaymentModal(orderId) {
+function showPaymentModal() {
     const modalHtml = `
         <div id="paymentModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Оплата заказа #${orderId}</h2>
+                <h2>Оплата заказа</h2>
                 <div class="payment-details">
                     <p>Для оплаты заказа переведите сумму на карту Сбербанка:</p>
                     <div class="card-info">
@@ -213,7 +193,7 @@ function showPaymentModal(orderId) {
                         <p class="phone-number">Телефон: +7 (999) 999-99-99</p>
                         <p class="phone-number">Смирнов А А</p>
                     </div>
-                    <button id="confirmPayment" class="confirm-payment-btn" onclick="confirmPayment(${orderId})">
+                    <button id="confirmPayment" class="confirm-payment-btn" onclick="confirmPayment()">
                         Подтвердить оплату
                     </button>
                 </div>
@@ -236,74 +216,69 @@ function showPaymentModal(orderId) {
     };
 }
 
-async function confirmPayment(orderId) {
+async function confirmPayment() {
+    const confirmButton = document.getElementById('confirmPayment');
+    confirmButton.disabled = true;
+    confirmButton.textContent = 'Подтверждение...';
+
     try {
-        const response = await fetch(`/api/payments/confirm/${orderId}`, {
+        // Проверяем наличие cartId и orderData
+        if (!cartId || !orderData) {
+            throw new Error('Отсутствуют данные для оформления заказа');
+        }
+
+        // Создаем заказ на сервере
+        const orderResponse = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cartId: cartId,
+                ...orderData
+            })
+        });
+
+        if (!orderResponse.ok) {
+            const errorResponse = await orderResponse.json();
+            throw new Error(errorResponse.message || 'Ошибка при оформлении заказа');
+        }
+
+        const order = await orderResponse.json();
+
+        // Подтверждаем оплату
+        const paymentResponse = await fetch(`/api/payments/confirm/${order.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
-        if (!response.ok) {
-            throw new Error('Ошибка при подтверждении оплаты');
+        if (!paymentResponse.ok) {
+            const errorResponse = await paymentResponse.json();
+            throw new Error(errorResponse.message || 'Ошибка при подтверждении оплаты');
         }
 
         showNotification('Оплата подтверждена! Спасибо за заказ.');
         localStorage.removeItem('cartId');
         cartId = null;
 
-        setTimeout(() => {
-            window.location.href = '/';
-        }, 2000);
-        async function confirmPayment(orderId) {
-            const confirmButton = document.getElementById('confirmPayment');
-            confirmButton.disabled = true;
-            confirmButton.textContent = 'Подтверждение...';
-
-            try {
-                const response = await fetch(`/api/payments/confirm/${orderId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Ошибка при подтверждении оплаты');
-                }
-
-                const payment = await response.json();
-
-                if (payment.status === 'CONFIRMED') {
-                    showNotification('Оплата подтверждена! Спасибо за заказ.');
-                    localStorage.removeItem('cartId');
-                    cartId = null;
-
-                    // Закрываем модальное окно
-                    const modal = document.getElementById('paymentModal');
-                    modal.style.display = 'none';
-
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 2000);
-                } else {
-                    throw new Error('Не удалось подтвердить оплату');
-                }
-
-            } catch (error) {
-                console.error('Ошибка при подтверждении оплаты:', error);
-                showNotification('Не удалось подтвердить оплату', true);
-            } finally {
-                confirmButton.disabled = false;
-                confirmButton.textContent = 'Подтвердить оплату';
-            }
+        // Закрываем модальное окно
+        const modal = document.getElementById('paymentModal');
+        if (modal) {
+            modal.style.display = 'none';
         }
 
+        // Перенаправляем на главную страницу
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
     } catch (error) {
         console.error('Ошибка при подтверждении оплаты:', error);
-        showNotification('Не удалось подтвердить оплату', true);
+        showNotification('Не удалось подтвердить оплату: ' + error.message, true);
+    } finally {
+        confirmButton.disabled = false;
+        confirmButton.textContent = 'Подтвердить оплату';
     }
 }
-
 document.addEventListener('DOMContentLoaded', loadCart);

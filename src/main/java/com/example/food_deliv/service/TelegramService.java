@@ -1,9 +1,8 @@
 package com.example.food_deliv.service;
 
 import com.example.food_deliv.config.TelegramConfig;
-import com.example.food_deliv.model.Cart;
-import com.example.food_deliv.model.CartItem;
 import com.example.food_deliv.model.Order;
+import com.example.food_deliv.model.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
@@ -20,7 +19,6 @@ public class TelegramService extends DefaultAbsSender {
     protected TelegramService(TelegramConfig telegramConfig) {
         super(new DefaultBotOptions());
         this.telegramConfig = telegramConfig;
-
     }
 
     @Override
@@ -56,8 +54,9 @@ public class TelegramService extends DefaultAbsSender {
         }
 
         message.append("\n🛒 <b>Состав заказа:</b>\n");
-        Cart cart = order.getCart();
-        for (CartItem item : cart.getItems()) {
+
+        // Используем OrderItem вместо CartItem
+        for (OrderItem item : order.getItems()) {
             message.append("\n• ");
             if (item.getDish() != null) {
                 message.append(item.getDish().getName());
@@ -77,7 +76,7 @@ public class TelegramService extends DefaultAbsSender {
         message.append("\n\n💰 <b>Итого: ").append(df.format(order.getTotalAmount())).append(" ₽</b>");
         message.append("\n📅 Время заказа: ").append(order.getCreatedAt().format(
                 java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
-
+        message.append("\n💳 <b>Проверьте оплату от ").append(order.getFullName()).append(" в приложении Сбербанка</b>\n\n");
         return message.toString();
     }
 }

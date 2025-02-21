@@ -42,7 +42,7 @@ const menuData = {
         ]
     },
     'Среда': {
-        image: 'https://images.unsplash.com/photo-1574653853027-5382a3d23c10?auto=format&fit=crop&q=80&w=800&h=600',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800&h=600',
         items: [
             {
                 name: 'Рыбный (минтай) (250 гр)',
@@ -142,19 +142,19 @@ function showDayMenu(day) {
                     <h3>Выберите напиток:</h3>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="drink" value="none" checked>
+                            <input type="radio" name="drink" value="Без напитка" checked>
                             Без напитка
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="drink" value="morse">
+                            <input type="radio" name="drink" value="Морс">
                             Морс
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="drink" value="compote">
+                            <input type="radio" name="drink" value="Компот">
                             Компот
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="drink" value="tea">
+                            <input type="radio" name="drink" value="Чай">
                             Чай
                         </label>
                     </div>
@@ -164,15 +164,15 @@ function showDayMenu(day) {
                     <h3>Выберите хлеб:</h3>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="bread" value="none" checked>
+                            <input type="radio" name="bread" value="Без хлеба" checked>
                             Без хлеба
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="bread" value="white">
+                            <input type="radio" name="bread" value="Белый">
                             Белый
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="bread" value="black">
+                            <input type="radio" name="bread" value="Черный">
                             Черный
                         </label>
                     </div>
@@ -234,11 +234,11 @@ function updatePrice() {
 
     let totalPrice = basePrice * quantity;
 
-    if (selectedBread !== "none") {
+    if (selectedBread !== "Без хлеба") {
         totalPrice += breadPrice * quantity;
     }
 
-    if (selectedDrink !== "none") {
+    if (selectedDrink !== "Без напитка") {
         totalPrice += drinkPrice * quantity;
     }
 
