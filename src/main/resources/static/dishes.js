@@ -25,7 +25,9 @@ async function loadDishes() {
         const categories = {
             'BREAKFAST': 'Завтраки',
             'DINNER': 'Ужины',
-            'ADDITIONAL': 'Дополнительные блюда'
+            'ADDITIONAL': 'Дополнительные блюда',
+            'SAUCES': 'Соусы',
+            'DRINKS': 'Напитки'
         };
 
         Object.entries(categories).forEach(([categoryKey, categoryName], index) => {

@@ -30,5 +30,5 @@ public class OrderItem {
     private Integer quantity;
     private BigDecimal price;
     private String bread;
-    private String drink;
+//    private String drink;
 }

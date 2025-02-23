@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -35,7 +36,7 @@ public class CartService {
     }
 
     @Transactional
-    public Cart addItemToCart(Long cartId, Long itemId, String itemType, int quantity, String bread, String drink) {
+    public Cart addItemToCart(Long cartId, Long itemId, String itemType, int quantity, String bread) {
         Cart cart = getCart(cartId);
 
         // Ищем существующий элемент с учетом itemType
@@ -44,6 +45,7 @@ public class CartService {
                     if ("dishes".equals(itemType)) {
                         return item.getDish() != null && item.getDish().getId().equals(itemId);
                     } else if ("complex-lunches".equals(itemType)) {
+                        // Для комплексных обедов сравниваем по itemId
                         return item.getComplexLunch() != null && item.getComplexLunch().getId().equals(itemId);
                     }
                     return false;
@@ -73,7 +75,6 @@ public class CartService {
                         .orElseThrow(() -> new RuntimeException("Комплексный обед не найден"));
                 cartItem.setComplexLunch(complexLunch);
                 cartItem.setBread(bread);  // Устанавливаем хлеб
-                cartItem.setDrink(drink);  // Устанавливаем напиток
             }
 
             updateCartItemPrice(cartItem);
@@ -83,6 +84,7 @@ public class CartService {
         updateCartTotal(cart);
         return cartRepository.save(cart);
     }
+
     public Cart getCart(Long cartId) {
         log.info("Attempting to get cart with id {}", cartId);
 
@@ -151,6 +153,7 @@ public class CartService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalPrice(total);
     }
+
     @Transactional
     public void clearCart(Long cartId) {
         Cart cart = getCart(cartId);
@@ -160,5 +163,4 @@ public class CartService {
             log.info("Корзина очищена: {}", cartId);
         }
     }
-
 }

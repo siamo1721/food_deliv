@@ -49,23 +49,23 @@ function renderCart(cart) {
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item';
         itemElement.innerHTML = `
-                    <div class="item-details">
-                        <span class="item-name">${item.dish ? item.dish.name : item.complexLunch.name}</span>
-                        <span class="item-price">${item.price} ₽</span>
-                    </div>
-                    <div class="item-quantity">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${Math.max(1, item.quantity - 1)})">-</button>
-                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                    </div>
-                    <button class="remove-item" onclick="removeItem(${item.id})">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 6h18"></path>
-                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                        </svg>
-                    </button>
-                `;
+            <div class="item-details">
+                <span class="item-name">${item.dish ? item.dish.name : item.complexLunch.name}</span>
+                <span class="item-price">${item.price} ₽</span>
+            </div>
+            <div class="item-quantity">
+                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${Math.max(1, item.quantity - 1)})">-</button>
+                <input type="number" class="quantity-input" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
+                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+            </div>
+            <button class="remove-item" onclick="removeItem(${item.id})">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                </svg>
+            </button>
+        `;
         container.appendChild(itemElement);
     });
 
@@ -74,20 +74,35 @@ function renderCart(cart) {
     totalElement.textContent = `Итого: ${cart.totalPrice} ₽`;
     container.appendChild(totalElement);
 
+    // Добавляем подпись о минимальной сумме заказа
+    const minOrderInfo = document.createElement('div');
+    minOrderInfo.className = 'min-order-info';
+    minOrderInfo.textContent = 'Минимальная сумма заказа: 1000 ₽';
+    container.appendChild(minOrderInfo);
+
     const checkoutButton = document.createElement('button');
     checkoutButton.className = 'checkout-btn';
     checkoutButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                </svg>
-                Оформить заказ
-            `;
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        Оформить заказ
+    `;
+
+    // Делаем кнопку неактивной, если сумма заказа меньше 1000 рублей
+    if (cart.totalPrice < 1000) {
+        checkoutButton.disabled = true;
+        checkoutButton.classList.add('disabled');
+    } else {
+        checkoutButton.disabled = false;
+        checkoutButton.classList.remove('disabled');
+    }
+
     checkoutButton.onclick = showOrderModal;
     container.appendChild(checkoutButton);
 }
-
 function renderEmptyCart() {
     const container = document.getElementById('cartContainer');
     container.innerHTML = `

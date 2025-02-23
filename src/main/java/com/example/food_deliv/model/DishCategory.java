@@ -3,5 +3,7 @@ package com.example.food_deliv.model;
 public enum DishCategory {
     BREAKFAST,
     DINNER,
-    ADDITIONAL
+    ADDITIONAL,
+    SAUCES,
+    DRINKS
 }

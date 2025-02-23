@@ -65,9 +65,9 @@ public class TelegramService extends DefaultAbsSender {
                 if (item.getBread() != null) {
                     message.append("\n  Хлеб: ").append(item.getBread());
                 }
-                if (item.getDrink() != null) {
-                    message.append("\n  Напиток: ").append(item.getDrink());
-                }
+//                if (item.getDrink() != null) {
+//                    message.append("\n  Напиток: ").append(item.getDrink());
+//                }
             }
             message.append("\n  Количество - ").append(item.getQuantity());
             message.append(" - ").append(df.format(item.getPrice())).append(" ₽");

@@ -32,17 +32,17 @@ public class CartController {
             @RequestBody CartItemRequest request) { // Используем CartItemRequest
         int quantity = request.getQuantity();
         String bread = null;
-        String drink = null;
+//        String drink = null;
 
         // Передаем bread и drink только для комплексных обедов
         if ("complex-lunches".equals(itemType)) {
             bread = request.getOptions().getBread();
-            drink = request.getOptions().getDrink();
+//            drink = request.getOptions().getDrink();
         }
-        log.info("Adding item to cart: cartId={}, itemId={}, itemType={}, quantity={}, bread={}, drink={}",
-                cartId, itemId, itemType, quantity, bread, drink);
+        log.info("Adding item to cart: cartId={}, itemId={}, itemType={}, quantity={}, bread={}",
+                cartId, itemId, itemType, quantity, bread);
         // Передаем все данные в сервис
-        Cart cart = cartService.addItemToCart(cartId, itemId, itemType, quantity, bread, drink);
+        Cart cart = cartService.addItemToCart(cartId, itemId, itemType, quantity, bread);
         return ResponseEntity.ok(cart);
     }
 

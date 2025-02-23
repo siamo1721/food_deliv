@@ -101,6 +101,7 @@ const menuData = {
             }
         ]
     }
+
 };
 
 function createWeekGrid() {
@@ -127,81 +128,57 @@ function showDayMenu(day) {
     let menuItemsHTML = '';
     dayMenu.items.forEach(item => {
         menuItemsHTML += `
-                    <div class="menu-item">
-                        <h3>${item.name}</h3>
-                        <p>${item.description}</p>
-                        <p>Калории: ${item.calories} ккал</p>
-                    </div>
-                `;
+            <div class="menu-item">
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <p>Калории: ${item.calories} ккал</p>
+            </div>
+        `;
     });
 
     content.innerHTML = `
-                <h2 style="color: #ff7b00; margin-bottom: 20px;">${day}</h2>
-                ${menuItemsHTML}
-                <div class="drink-options">
-                    <h3>Выберите напиток:</h3>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="drink" value="Без напитка" checked>
-                            Без напитка
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="drink" value="Морс">
-                            Морс
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="drink" value="Компот">
-                            Компот
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="drink" value="Чай">
-                            Чай
-                        </label>
-                    </div>
-                </div>
-
-                <div class="bread-options">
-                    <h3>Выберите хлеб:</h3>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="bread" value="Без хлеба" checked>
-                            Без хлеба
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="bread" value="Белый">
-                            Белый
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="bread" value="Черный">
-                            Черный
-                        </label>
-                    </div>
-                </div>
-
-                <div class="quantity-control">
-                    <h3>Количество:</h3>
-                    <button class="quantity-btn" onclick="decrementQuantity()">-</button>
-                    <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="10">
-                    <button class="quantity-btn" onclick="incrementQuantity()">+</button>
-                </div>
-
-                <div id="totalPrice" style="margin-top: 15px; font-weight: bold;">Итого: 350 руб.</div>
-
-                <button class="add-to-cart" onclick="addToCart()">
-                    Добавить в корзину
-                </button>
-            `;
+        <h2 style="color: #ff7b00; margin-bottom: 20px;">${day}</h2>
+        ${menuItemsHTML}
+        <div class="bread-options">
+            <h3>Выберите хлеб:</h3>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="bread" value="Без хлеба" checked>
+                    Без хлеба
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="bread" value="Белый">
+                    Белый
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="bread" value="Черный">
+                    Черный
+                </label>
+            </div>
+        </div>
+        <div class="quantity-control">
+            <h3>Количество:</h3>
+            <button class="quantity-btn" onclick="decrementQuantity()">-</button>
+            <input type="number" id="quantity" class="quantity-input" value="4" min="4" max="20">
+            <button class="quantity-btn" onclick="incrementQuantity()">+</button>
+        </div>
+        <div id="totalPrice" style="margin-top: 15px; font-weight: bold;">Итого: 300 руб.</div>
+        <button class="add-to-cart" onclick="addToCart('${day}')">
+            Добавить в корзину
+        </button>
+    `;
 
     modal.style.display = 'block';
     updatePrice();
 
     // Добавляем обработчики событий для обновления цены
-    document.querySelectorAll('input[name="bread"], input[name="drink"]').forEach(radio => {
+    document.querySelectorAll('input[name="bread"]').forEach(radio => {
         radio.addEventListener('change', updatePrice);
     });
 
     document.getElementById('quantity').addEventListener('change', updatePrice);
 }
+
 
 function closeModal() {
     document.getElementById('menuModal').style.display = 'none';
@@ -209,7 +186,7 @@ function closeModal() {
 
 function incrementQuantity() {
     const input = document.getElementById('quantity');
-    if (input.value < 10) {
+    if (input.value < 20) {
         input.value = parseInt(input.value) + 1;
         updatePrice();
     }
@@ -217,30 +194,31 @@ function incrementQuantity() {
 
 function decrementQuantity() {
     const input = document.getElementById('quantity');
-    if (input.value > 1) {
+    if (input.value > 4) {
         input.value = parseInt(input.value) - 1;
         updatePrice();
     }
 }
 
+
 function updatePrice() {
     const quantity = parseInt(document.getElementById('quantity').value);
-    const basePrice = 350;
+    const basePrice = 300;
     const breadPrice = 15;
-    const drinkPrice = 30;
+    // const drinkPrice = 30;
 
     const selectedBread = document.querySelector('input[name="bread"]:checked').value;
-    const selectedDrink = document.querySelector('input[name="drink"]:checked').value;
+    // const selectedDrink = document.querySelector('input[name="drink"]:checked').value;
 
     let totalPrice = basePrice * quantity;
 
     if (selectedBread !== "Без хлеба") {
         totalPrice += breadPrice * quantity;
     }
-
-    if (selectedDrink !== "Без напитка") {
-        totalPrice += drinkPrice * quantity;
-    }
+    //
+    // if (selectedDrink !== "Без напитка") {
+    //     totalPrice += drinkPrice * quantity;
+    // }
 
     document.getElementById('totalPrice').textContent = `Итого: ${totalPrice} руб.`;
 }
@@ -296,14 +274,29 @@ async function updateCartCount() {
     }
 }
 
-async function addToCart() {
+async function addToCart(selectedDay) {
     const quantity = parseInt(document.getElementById('quantity').value);
-    const drink = document.querySelector('input[name="drink"]:checked').value;
     const bread = document.querySelector('input[name="bread"]:checked').value;
+
+    // Преобразуем выбранный день в itemId
+    const dayToItemIdMap = {
+        'Понедельник': 1,
+        'Вторник': 2,
+        'Среда': 3,
+        'Четверг': 4,
+        'Пятница': 5
+    };
+
+    const itemId = dayToItemIdMap[selectedDay];
+
+    if (!itemId) {
+        showNotification('Ошибка: выбранный день не поддерживается.', true);
+        return;
+    }
 
     try {
         const currentCartId = await getOrCreateCart();
-        const response = await fetch(`/api/cart/${currentCartId}/complex-lunches/1`, {
+        const response = await fetch(`/api/cart/${currentCartId}/complex-lunches/${itemId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -311,7 +304,6 @@ async function addToCart() {
             body: JSON.stringify({
                 quantity,
                 options: {
-                    drink,
                     bread
                 }
             })

@@ -57,7 +57,7 @@ public class OrderService {
                         orderItem.setQuantity(cartItem.getQuantity());
                         orderItem.setPrice(cartItem.getPrice());
                         orderItem.setBread(cartItem.getBread());
-                        orderItem.setDrink(cartItem.getDrink());
+//                        orderItem.setDrink(cartItem.getDrink());
                         return orderItem;
                     })
                     .collect(Collectors.toList());
@@ -110,7 +110,7 @@ public class OrderService {
         orderItemDTO.setQuantity(orderItem.getQuantity());
         orderItemDTO.setPrice(orderItem.getPrice());
         orderItemDTO.setBread(orderItem.getBread());
-        orderItemDTO.setDrink(orderItem.getDrink());
+//        orderItemDTO.setDrink(orderItem.getDrink());
 
         return orderItemDTO;
     }
